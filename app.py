@@ -3,9 +3,6 @@ import pytesseract
 from PIL import Image
 import io
 
-# arahkan langsung ke lokasi Tesseract
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-
 app = Flask(__name__)
 
 @app.route("/ocr", methods=["POST"])
@@ -15,7 +12,7 @@ def ocr():
 
     file = request.files["file"]
     image = Image.open(io.BytesIO(file.read()))
-    text = pytesseract.image_to_string(image, lang="eng+ind")  # bisa ganti "ind" kalau perlu
+    text = pytesseract.image_to_string(image, lang="eng+ind")  # eng = English, ind = Indonesia
 
     return jsonify({"text": text})
 
@@ -24,4 +21,4 @@ def home():
     return "🚀 OCR API is running!"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
